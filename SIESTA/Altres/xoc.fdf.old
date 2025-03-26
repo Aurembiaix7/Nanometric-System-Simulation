@@ -1,0 +1,125 @@
+
+SystemName H2 + O2 -> H2O2 reaction # Descriptive name of the system
+SystemLabel            xoc         # Short name for naming files   
+
+# Species and atoms
+
+NumberOfSpecies       2
+NumberOfAtoms         4
+%block ChemicalSpeciesLabel
+  1   8  O
+  2   1  H
+%endblock ChemicalSpeciesLabel
+
+# Basis
+
+%block PAO.Basis
+O    3     -0.18518
+ n=2   0   2   E    87.07381     4.73934
+     7.32942     4.60369
+     1.00000     1.00000
+ n=2   1   2   E    68.29553     4.97037
+     6.60250     3.04671
+     1.00000     1.00000
+ n=3   2   1   E    91.07115     3.95115
+     6.89342
+     1.00000
+H     2      0.22
+ n=1    0    2   E      2.07      0.00
+   4.971   1.771
+   1.000   1.000
+ n=2    1    1   E      0.89      0.01
+   4.988
+   1.000
+%endblock PAO.Basis
+
+LatticeConstant       1.0000 Ang
+%block LatticeVectors
+20.00000   0.000000  0.000000
+ 0.00000  20.000000  0.000000 
+ 0.00000   0.000000 20.000000
+%endblock LatticeVectors
+
+%block kgrid_Monkhorst_Pack
+   1  0  0  0.
+   0  1  0  0.
+   0  0  1  0.
+%endblock Kgrid_Monkhorst_Pack
+
+xc.functional         GGA           # Exchange-correlation functional
+xc.authors            PBE           # Exchange-correlation version
+
+#SpinPolarized         true          # Logical parameters are: yes or no
+
+MeshCutoff           200. Ry        # Mesh cutoff. real space mesh 
+
+# SCF options
+#SCFMustConvergence     true
+MaxSCFIterations       150          # Maximum number of SCF iter
+DM.MixingWeight       0.02          # New DM amount for next SCF cycle
+DM.Tolerance          3.d-4         # Tolerance in maximum difference
+                                    # between input and output DM
+DM.NumberPulay          6           # to use continuation files
+#DM.NumberBroyden       3
+#DM.AllowExtrapolation  false
+
+MD.UseSaveData           true
+
+Diag.DivideAndConquer 	true
+SolutionMethod        diagon        # OrderN or Diagon
+ElectronicTemperature  25 meV       # Temp. for Fermi smearing
+
+# -----------------------------
+#  MD options
+#  options for a basic MD run
+# -----------------------------
+
+# Options to Integrate Equations of motion
+
+MD.TypeOfRun         verlet         # Standard Verlet algrithm 
+                                    # for Molecular Dynamics
+
+MD.LengthTimeStep         1.0 fs    # time step integration
+                                    # Newton eqs of motion  
+                                  
+MD.Initial.Time.Step     1          #initial time step of MD
+
+MD.FinalTimeStep         100        #Final time step of MD
+
+# Initial Atomic coordinates and Velocity for MD run
+                         
+#MD.InitialTemperature   700   K    #Assign initial random velocity from
+                                    # a Maxwell-Boltzmann distribution 
+                                    # for a given temperature 
+
+MD.UseSaveXV 		true        # use atomic Positions 
+                                    # and Velocities from 
+                                    # a saved XV file
+
+AtomicCoordinatesFormat Ang         #Use Angstroms for atomic coordinates
+%block AtomicCoordinatesAndAtomicSpecies
+        1.348000        0.000000        0.000000  1  ! O 1
+        2.652000        0.000000        0.000000  1  ! O 2
+        6.628000        0.000000        0.000000  2  ! H 3
+        7.372000        0.000000        0.000000  2  ! H 4
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+#MD Output
+
+WriteCoorXmol          true         #Save the final coordinates in .xyz format 
+
+WriteMDXmol            true         #Writes the coordinates 
+                                    #of all atoms at all steps
+                                    #in a .ANI file
+                                    #in xyz format
+                                    
+WriteMDhistory         true         #writes .MDE and .MD files
+                                    # with output data from MD simulation
+                                    # MDE contains: Temp, energy, volume, pressure 
+                                    # (human readable)
+                                    # MD contains coords vel lattice vectors
+                                    # (unformatted; post-process with iomd.f)  
+
+
+
+
